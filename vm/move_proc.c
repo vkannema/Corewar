@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 19:42:05 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/16 17:42:14 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/22 09:50:32 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,15 +76,14 @@ void	move_proc(t_en *e)
 	display_game(e);
 	while (end)
 	{
-		if (proc == e->proc)
+		if (e->tot_cycle >= 3820)
+			ft_printf("proc->op %x\n", proc->op);
+		if (proc->start == 1)
 			adjust_cycles(e, &end);
 		if (end)
 		{
 			if (proc->alive)
-			{
-				e->start = 0;
 				init_operation(e, proc);
-			}
 		}
 		proc = proc->next;
 	}

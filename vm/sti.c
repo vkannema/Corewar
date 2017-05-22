@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/07 21:55:11 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/17 15:41:20 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/21 21:42:40 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,14 @@ void		sti(t_en *e, t_proc *proc)
 	{
 		proc->carry = 0;
 		i = -1;
-		while (++i < 4)
-		{
-			e->memory[MODA((proc->pc + s.where + i))] =
-				(s.value >> (8 * (3 - i))) & 0xff;
-		}
+		proc->carry = 0;
+        i = -1;
+        if (e->tot_cycle == 3666)
+            ft_printf("sti\n");
+        e->memory[s.where + proc->pc] = s.value >> 24;
+        e->memory[s.where + proc->pc + 1] = s.value >> 16;
+        e->memory[s.where + proc->pc + 2] = s.value >> 8;
+        e->memory[s.where + proc->pc + 3] = s.value;
 	}
 	else
 	{

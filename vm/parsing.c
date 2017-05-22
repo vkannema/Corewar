@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/17 15:25:08 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/19 14:23:16 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/20 21:34:45 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	envinit(t_en *env)
 	env->tot_cycle = 0;
 	env->last_rapported = -1;
 	env->start = 1;
+	env->ch = 1;
 	env->die_cycle = CYCLE_TO_DIE;
 	while (i++ < 4)
 		env->assigned_table[i] = 0;

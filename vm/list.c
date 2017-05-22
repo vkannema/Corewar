@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/05 20:44:14 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/16 14:37:45 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/22 09:24:36 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,10 @@ void	add_proc(t_en *e, t_proc *proc, t_proc *new)
 	tmp = e->proc;
 	if (tmp->next == tmp)
 	{
+		e->nb_proc++;
 		tmp->next = new;
 		new->next = tmp;
+		e->end = new;
 	}
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: vtenigin <vtenigin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 21:47:53 by vtenigin          #+#    #+#             */
-/*   Updated: 2017/05/19 14:41:28 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/20 20:59:36 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int		main(int ac, char **av)
 	writechamp(&env);
 	makeproc(&env);
 	ft_print_dump_init(&env);
+	env.proc->start = 1;
 	move_proc(&env);
 	winner(&env);
 	return (0);

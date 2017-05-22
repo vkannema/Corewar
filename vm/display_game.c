@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/14 16:05:57 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/17 15:35:03 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/20 22:00:35 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	print_operations(t_en *e)
 		}
 		proc = proc->next;
 	}
-	refresh();
 }
 
 void	display_memory(t_en *e)
@@ -95,13 +94,15 @@ void	ft_print_bonus(t_en *e)
 	erase();
 	display_memory(e);
 	print_operations(e);
+	refresh();
 	if (e->ch == 'p')
-		e->ch = 0;
+		e->ch = 5;
 }
 
 void	display_game(t_en *e)
 {
-	if (e->bonus)
+	e->ch--;
+	if (e->bonus && e->ch == 0)
 		ft_print_bonus(e);
 	if (e->dump > 0 && e->dump == e->tot_cycle)
 		printmemory(e);
