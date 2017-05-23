@@ -6,7 +6,7 @@
 /*   By: vtenigin <vtenigin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 22:55:15 by vtenigin          #+#    #+#             */
-/*   Updated: 2017/05/19 14:06:53 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/22 16:00:23 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,8 @@ typedef struct					s_en
 typedef struct					s_sti
 {
 	char						acb;
-	int							where;
-	int							value;
+	unsigned int				where;
+	unsigned int				value;
 	int							jump;
 }								t_sti;
 
@@ -150,7 +150,6 @@ int								is_assignment(char *s, char *s2, t_en *e);
 void							*revbytes(void *mem, size_t size);
 void							printmemory(t_en *env);
 int								validacb(t_en *env, t_proc *proc);
-void							del_one(t_en *e, t_proc *to_del);
 void							add_proc(t_en *e, t_proc *proc, t_proc *new);
 void							move_proc(t_en *e);
 void							init_operation(t_en *e, t_proc *proc);

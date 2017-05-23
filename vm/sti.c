@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/07 21:55:11 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/21 21:42:40 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/22 15:23:50 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,20 +85,16 @@ static int	get_instruction(t_en *e, t_proc *proc, t_sti *s)
 void		sti(t_en *e, t_proc *proc)
 {
 	t_sti	s;
-	int		i;
+	int		test;
 
 	if (get_instruction(e, proc, &s))
 	{
 		proc->carry = 0;
-		i = -1;
-		proc->carry = 0;
-        i = -1;
-        if (e->tot_cycle == 3666)
-            ft_printf("sti\n");
-        e->memory[s.where + proc->pc] = s.value >> 24;
-        e->memory[s.where + proc->pc + 1] = s.value >> 16;
-        e->memory[s.where + proc->pc + 2] = s.value >> 8;
-        e->memory[s.where + proc->pc + 3] = s.value;
+		test = MODA(s.where + proc->pc);
+		e->memory[test] = s.value >> 24;
+		e->memory[MODA(test + 1)] = s.value >> 16;
+		e->memory[MODA(test + 2)] = s.value >> 8;
+		e->memory[MODA(test + 3)] = s.value;
 	}
 	else
 	{

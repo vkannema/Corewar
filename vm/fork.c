@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/09 20:34:20 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/22 09:24:25 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/22 16:25:57 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,30 @@ static short	get_dir(t_en *e, t_proc *proc, int i)
 	return ((short)r);
 }
 
+static int		get_fork(int pc, int res)
+{
+	int	ret;
+
+	ret = 0;
+	if (res > 32767)
+	{
+		ret = -(MODR(res));
+		return (pc + ret);
+	}
+	return (pc + MODR(res));
+}
+
 void			ft_fork(t_en *e, t_proc *proc)
 {
-	t_proc	*new;
-	int		res;
+	t_proc				*new;
+	unsigned int		res;
 
 	res = get_dir(e, proc, 1);
+	res = get_fork(proc->pc, res);
+	res = MODA(res);
 	proc->op = 0;
 	new = newproc(proc);
-	new->pc += MODR(res);
-	new->pc = MODA(new->pc);
+	new->pc = res;
 	proc->pc = MODA(proc->pc + 3);
 	add_proc(e, proc, new);
 }

@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 20:02:37 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/19 14:00:43 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/22 16:32:07 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,16 @@ static short	get_dir(t_en *e, t_proc *proc, int i)
 
 void			lfork(t_en *e, t_proc *proc)
 {
-	t_proc	*new;
-	int		res;
+	t_proc			*new;
+	unsigned int	res;
 
 	res = get_dir(e, proc, 1);
+	res = proc->pc + res;
+	res = MODA(res);
 	proc->op = 0;
 	new = newproc(proc);
-	new->pc += res;
-	new->pc = MODA(new->pc);
+	new->pc = res;
+	ft_printf("pc %d\n", new->pc);
 	proc->pc = MODA(proc->pc + 3);
 	add_proc(e, proc, new);
 }

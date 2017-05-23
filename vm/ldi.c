@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/12 11:35:05 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/15 22:49:49 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/22 17:47:14 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,25 @@ static int	get_sum(t_en *e, t_proc *proc)
 		ret = fill_reg(e->memory[MODA(proc->pc + proc->args[0])] +
 		proc->args[1]);
 	else if (proc->acb == 0b01010100)
-		ret = proc->reg[proc->args[1] - 1] + proc->reg[proc->args[0] - 1];
+		ret = (int)(proc->reg[proc->args[1] - 1] + proc->reg[proc->args[0] - 1]);
 	else if (proc->acb == 0b10010100)
 		ret = proc->args[0] + proc->reg[proc->args[1]];
 	else if (proc->acb == 0b11010100)
 		ret = proc->reg[proc->args[0] - 1] + proc->reg[proc->args[1] - 1];
 	return (ret);
+}
+
+static int		get_ldi(int pc, int res)
+{
+	int	ret;
+
+	ret = 0;
+	if (res > 32767)
+	{
+		ret = -(MODR(res));
+		return (pc + ret);
+	}
+	return (pc + MODR(res));
 }
 
 void		ft_ldi(t_en *e, t_proc *proc)
@@ -81,14 +94,16 @@ void		ft_ldi(t_en *e, t_proc *proc)
 
 	get_args(e, proc);
 	adress = get_sum(e, proc);
+	adress = get_ldi(proc->pc, adress);
 	if (adress == 0)
 		proc->carry = 1;
 	else
 	{
-		proc->reg[proc->args[2] - 1] = adress;
+		proc->reg[proc->args[2] - 1] = get_hex_sum1(e->memory[adress],
+			e->memory[MODA(adress + 1)], e->memory[MODA(adress + 2)],
+			e->memory[MODA(adress + 3)]);
 		proc->carry = 0;
 	}
-	proc->pc += proc->to_inc;
 	proc->pc = MODA(proc->pc + proc->to_inc);
 	proc->to_inc = 1;
 	proc->op = 0;

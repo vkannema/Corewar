@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/14 16:05:57 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/20 22:00:35 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/22 16:55:42 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	print_operations(t_en *e)
 		{
 			printw("%d cycles to launch %x operation.", proc->to_wait,
 			proc->op);
+			while (i++ < 16)
+				printw(" reg[%d] %x |", i, proc->reg[i]);
 			printw("pc %d\n", proc->pc);
 		}
 		proc = proc->next;
@@ -95,8 +97,14 @@ void	ft_print_bonus(t_en *e)
 	display_memory(e);
 	print_operations(e);
 	refresh();
-	if (e->ch == 'p')
+	if (e->ch == '1')
+		e->ch = 1;
+	else if (e->ch == '2')
 		e->ch = 5;
+	else if (e->ch == '3')
+		e->ch = 10;
+	else if (e->ch == '4')
+		e->ch = 100;
 }
 
 void	display_game(t_en *e)

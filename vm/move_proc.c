@@ -6,11 +6,30 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 19:42:05 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/22 09:50:32 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/22 16:29:58 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+
+// t_proc	*del_one(t_en *e, t_proc *to_del)
+// {
+// 	t_proc	*tmp;
+//
+// 	tmp = e->proc;
+// 	tmp = tmp->next;
+// 	while (tmp != e->proc && tmp->next != to_del)
+// 		tmp = tmp->next;
+// 	if (tmp != e->proc)
+// 	{
+// 		if (e->end == to_del || tmp->next == e->end)
+// 			e->end = tmp;
+// 		tmp->next = to_del->next;
+// 		free(to_del);
+// 		to_del = NULL;
+// 	}
+// 	return (tmp);
+// }
 
 void	reset_lives(t_en *e)
 {
@@ -24,7 +43,10 @@ void	reset_lives(t_en *e)
 	while (tmp != e->proc)
 	{
 		if (!tmp->live)
+		{
 			tmp->alive = 0;
+			// tmp = del_one(e, tmp);
+		}
 		tmp->live = 0;
 		tmp = tmp->next;
 	}
@@ -52,6 +74,7 @@ void	new_cycle(t_en *e, int *end)
 
 void	adjust_cycles(t_en *e, int *end)
 {
+	display_game(e);
 	if (e->nb_cycles >= e->die_cycle)
 		new_cycle(e, end);
 	else
@@ -60,7 +83,6 @@ void	adjust_cycles(t_en *e, int *end)
 		e->nb_cycles++;
 		e->tot_cycle++;
 	}
-	display_game(e);
 }
 
 void	move_proc(t_en *e)
@@ -76,8 +98,6 @@ void	move_proc(t_en *e)
 	display_game(e);
 	while (end)
 	{
-		if (e->tot_cycle >= 3820)
-			ft_printf("proc->op %x\n", proc->op);
 		if (proc->start == 1)
 			adjust_cycles(e, &end);
 		if (end)
