@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/14 16:05:57 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/22 16:55:42 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/24 17:32:34 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ void	print_operations(t_en *e)
 		{
 			printw("%d cycles to launch %x operation.", proc->to_wait,
 			proc->op);
-			while (i++ < 16)
-				printw(" reg[%d] %x |", i, proc->reg[i]);
 			printw("pc %d\n", proc->pc);
 		}
 		proc = proc->next;

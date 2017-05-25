@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/17 15:33:38 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/20 21:28:51 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/24 17:33:06 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void		op_norm(t_en *e, t_proc *proc, int error)
 	if (proc->to_wait == 0)
 	{
 		proc->acb = e->memory[MODA(proc->pc + 1)];
-		// ft_printf("proc->acb %x proc->op %x cycle %d\n", proc->acb, proc->op, e->tot_cycle);
 		if (proc->op >= 0 && proc->op <= 16)
 			op_norm2(e, proc, error);
 		else

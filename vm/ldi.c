@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/12 11:35:05 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/22 17:47:14 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/24 17:34:49 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ static int	get_sum(t_en *e, t_proc *proc)
 		ret = fill_reg(e->memory[MODA(proc->pc + proc->args[0])] +
 		proc->args[1]);
 	else if (proc->acb == 0b01010100)
-		ret = (int)(proc->reg[proc->args[1] - 1] + proc->reg[proc->args[0] - 1]);
+		ret = (int)(proc->reg[proc->args[1] - 1] +
+			proc->reg[proc->args[0] - 1]);
 	else if (proc->acb == 0b10010100)
 		ret = proc->args[0] + proc->reg[proc->args[1]];
 	else if (proc->acb == 0b11010100)
@@ -75,7 +76,7 @@ static int	get_sum(t_en *e, t_proc *proc)
 	return (ret);
 }
 
-static int		get_ldi(int pc, int res)
+static int	get_ldi(int pc, int res)
 {
 	int	ret;
 

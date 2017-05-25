@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 20:02:37 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/22 16:32:07 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/24 17:29:40 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void			lfork(t_en *e, t_proc *proc)
 	proc->op = 0;
 	new = newproc(proc);
 	new->pc = res;
-	ft_printf("pc %d\n", new->pc);
 	proc->pc = MODA(proc->pc + 3);
 	add_proc(e, proc, new);
 }
