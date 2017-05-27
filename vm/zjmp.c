@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 15:14:21 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/16 15:01:37 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/26 11:27:29 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void	get_args_zjmp(t_en *e, t_proc *proc)
 {
-	proc->args[0] = get_hex_sum(MODA(e->memory[proc->pc + 1]),
-	MODA(e->memory[proc->pc + 2]));
+	proc->args[0] = MODR(get_hex_sum(MODA(e->memory[proc->pc + 1]),
+	MODA(e->memory[proc->pc + 2])));
 }
 
 void		zjmp(t_en *e, t_proc *proc)

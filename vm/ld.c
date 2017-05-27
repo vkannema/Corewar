@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 11:42:38 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/17 12:10:08 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/26 11:26:52 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,16 @@ static void	get_args_ld(t_en *e, t_proc *proc)
 {
 	if (proc->acb == 0b11010000)
 	{
-		proc->args[0] = get_hex_sum(e->memory[MODA(proc->pc + 2)],
-		e->memory[MODA(proc->pc + 3)]);
+		proc->args[0] = MODR(get_hex_sum(e->memory[MODA(proc->pc + 2)],
+		e->memory[MODA(proc->pc + 3)]));
 		proc->args[1] = e->memory[MODA(proc->pc + 4)];
 		proc->to_inc = 5;
 	}
 	else if (proc->acb == 0b10010000)
 	{
-		proc->args[0] = get_hex_sum1(e->memory[MODA(proc->pc + 2)],
+		proc->args[0] = MODR(get_hex_sum1(e->memory[MODA(proc->pc + 2)],
 			e->memory[MODA(proc->pc + 3)], e->memory[MODA(proc->pc + 4)],
-			e->memory[MODA(proc->pc + 5)]);
+			e->memory[MODA(proc->pc + 5)]));
 		proc->args[1] = e->memory[MODA(proc->pc + 6)];
 		proc->to_inc = 7;
 	}

@@ -6,7 +6,7 @@
 /*   By: vtenigin <vtenigin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 19:03:42 by vtenigin          #+#    #+#             */
-/*   Updated: 2017/05/17 18:51:17 by vtenigin         ###   ########.fr       */
+/*   Updated: 2017/05/25 21:52:24 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,6 @@ int		main(int ac, char **av)
 	}
 	freesrc(&env);
 	free(env.header);
+	ft_printf("File.cor created.\n");
 	return (0);
 }
