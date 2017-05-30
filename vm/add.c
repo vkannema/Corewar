@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 17:33:05 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/24 17:32:55 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/29 23:36:07 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,32 @@ static void	get_args(t_en *e, t_proc *proc)
 	}
 }
 
+int			is_reg(int a1, int a2, int a3)
+{
+	if (a1 > 0 && a1 < 17 && a2 > 0 && a2 < 17 && a3 > 0 && a3 < 17)
+		return (1);
+	return (0);
+}
+
 void		add(t_en *e, t_proc *proc)
 {
 	int	res;
 
 	get_args(e, proc);
-	res = proc->reg[proc->args[0] - 1] + proc->reg[proc->args[1] - 1];
-	if (res == 0)
+	if (is_reg(proc->args[0] - 1, proc->args[1] - 1, proc->args[2] - 1))
 	{
-		proc->reg[proc->args[2] - 1] = res;
-		proc->carry = 1;
-		proc->to_inc = 5;
-	}
-	else
-	{
-		proc->carry = 0;
-		proc->reg[proc->args[2] - 1] = res;
+		res = proc->reg[proc->args[0] - 1] + proc->reg[proc->args[1] - 1];
+		if (res == 0)
+		{
+			proc->reg[proc->args[2] - 1] = res;
+			proc->carry = 1;
+			proc->to_inc = 5;
+		}
+		else
+		{
+			proc->carry = 0;
+			proc->reg[proc->args[2] - 1] = res;
+		}
 	}
 	proc->pc = MODA(proc->pc + proc->to_inc);
 	proc->to_inc = 1;

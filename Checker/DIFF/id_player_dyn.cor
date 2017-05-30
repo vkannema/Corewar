@@ -1,0 +1,6 @@
+2c2
+< * Player -1, weighing 18 bytes, "zork" ("justabasiclivingprog") !
+---
+> * Player 1, weighing 18 bytes, "zork" ("justabasiclivingprog") !
+67d66
+< Contestant -1 : zork as won !

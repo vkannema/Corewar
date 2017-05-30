@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display_game.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vtenigin <vtenigin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/14 16:05:57 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/24 17:32:34 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/29 22:59:24 by vtenigin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,9 @@ void	ft_print_bonus(t_en *e)
 	i = 0;
 	if (e->ch == 0)
 		e->ch = getch();
+	while (e->ch != '1' && e->ch != '2' && e->ch != '3' && e->ch != '4'
+	&& e->ch != ' ' && e->ch != -1)
+		e->ch = getch();
 	erase();
 	display_memory(e);
 	print_operations(e);
@@ -103,12 +106,15 @@ void	ft_print_bonus(t_en *e)
 		e->ch = 10;
 	else if (e->ch == '4')
 		e->ch = 100;
+	else if (e->ch == ' ')
+		e->ch = -1;
 }
 
 void	display_game(t_en *e)
 {
-	e->ch--;
-	if (e->bonus && e->ch == 0)
+	if (e->ch != -1)
+		e->ch--;
+	if (e->bonus && (e->ch == 0 || e->ch == -1))
 		ft_print_bonus(e);
 	if (e->dump > 0 && e->dump == e->tot_cycle)
 		printmemory(e);

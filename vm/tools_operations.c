@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 21:30:01 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/17 15:41:23 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/29 16:22:55 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,15 @@
 
 int			get_address(int pc, int arg)
 {
+	unsigned int	res;
+
 	if (arg > 32767)
 	{
-		arg = -(arg);
-		arg = MODA(arg);
-		return (pc - arg);
+		arg = 0xffff - arg + 1;
+		arg = MODR(arg);
+		arg = pc - arg;
+		res = MODA(arg);
+		return (MODA(res));
 	}
 	arg = MODR(arg);
 	return (pc + arg);

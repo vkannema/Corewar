@@ -1,0 +1,6 @@
+2,3c2,3
+< * Player -1, weighing 5 bytes, "test_sub_instruction" ("test_registeries") !
+< Contestant -1 : test_sub_instruction as won !
+---
+> * Player 1, weighing 5 bytes, "test_sub_instruction" ("test_registeries") !
+> Contestant 1, "test_sub_instruction", has won !

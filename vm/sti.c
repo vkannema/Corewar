@@ -6,102 +6,114 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/07 21:55:11 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/22 15:23:50 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/29 23:38:22 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-static int	is_valid(t_en *e, t_proc *proc, int jump)
+static void	get_args2(t_en *e, t_proc *proc)
 {
-	char	read;
+	if (proc->acb == 0b01011000)
+	{
+		proc->args[0] = e->memory[MODA(proc->pc + 2)];
+		proc->args[1] = e->memory[MODA(proc->pc + 3)];
+		proc->args[2] = get_hex_sum((e->memory[MODA(proc->pc + 4)]),
+		(e->memory[MODA(proc->pc + 5)]));
+		proc->to_inc = 6;
+	}
+	else if (proc->acb == 0b01101000 || proc->acb == 0b01111000)
+	{
+		proc->args[0] = e->memory[MODA(proc->pc + 2)];
+		proc->args[1] = get_hex_sum((e->memory[MODA(proc->pc + 3)]),
+		(e->memory[MODA(proc->pc + 4)]));
+		proc->args[2] = get_hex_sum((e->memory[MODA(proc->pc + 5)]),
+		(e->memory[MODA(proc->pc + 6)]));
+		proc->to_inc = 7;
+	}
+}
 
-	read = (char)((e->memory[MODA(proc->pc + jump)]));
-	if (read > 0 && read <= REG_NUMBER)
+static void	get_args(t_en *e, t_proc *proc)
+{
+	if (proc->acb == 0b01010100)
+	{
+		proc->args[0] = e->memory[MODA(proc->pc + 2)];
+		proc->args[1] = e->memory[MODA(proc->pc + 3)];
+		proc->args[2] = e->memory[MODA(proc->pc + 4)];
+		proc->to_inc = 5;
+	}
+	else if (proc->acb == 0b01100100)
+	{
+		proc->args[0] = e->memory[MODA(proc->pc + 2)];
+		proc->args[1] = get_hex_sum(e->memory[MODA(proc->pc + 3)],
+			e->memory[MODA(proc->pc + 4)]);
+		proc->args[2] = e->memory[MODA(proc->pc + 5)];
+		proc->to_inc = 6;
+	}
+	else if (proc->acb == 0b01110100)
+	{
+		proc->args[0] = e->memory[MODA(proc->pc + 2)];
+		proc->args[1] = get_hex_sum((e->memory[MODA(proc->pc + 3)]),
+		(e->memory[MODA(proc->pc + 4)]));
+		proc->to_inc = 5;
+	}
+	get_args2(e, proc);
+}
+
+static int	is_reg(int a1, int a2)
+{
+	if (a1 > 0 && a1 < 17 && a2 > 0 && a2 < 17)
 		return (1);
 	return (0);
 }
 
-static int	read_hexa(t_en *e, t_proc *proc, char type, int jump)
+static int	get_sum(t_en *e, t_proc *proc)
 {
-	char	read1;
-	short	read2;
-	int		read4;
+	int	ret;
 
-	if (type == REG_CODE)
-	{
-		read1 = (e->memory[MODA(proc->pc + jump)]);
-		return (proc->reg[read1 - 1]);
-	}
-	read2 = (short)((e->memory[MODA(proc->pc + jump)]) << 8 |
-			(e->memory[MODA(proc->pc + jump + 1)]));
-	if (type == DIR_CODE)
-		return ((int)read2);
-	read2 = MODR(read2);
-	read4 = (int)((e->memory[MODA(proc->pc + read2)]) << 24 |
-			(e->memory[MODA(proc->pc + read2 + 1)]) << 16 |
-			(e->memory[MODA(proc->pc + read2 + 2)]) << 8 |
-			(e->memory[MODA(proc->pc + read2 + 3)]));
-	return (read4);
-}
-
-static int	get_terms(t_en *e, t_proc *proc, t_sti *s, char type)
-{
-	int		ret;
-
-	ret = 1;
-	if (type == REG_CODE && !is_valid(e, proc, s->jump))
-		ret = 0;
-	else
-		s->where += read_hexa(e, proc, type, s->jump);
-	s->jump = type == REG_CODE ? s->jump + 1 : s->jump + 2;
-	return (ret);
-}
-
-static int	get_instruction(t_en *e, t_proc *proc, t_sti *s)
-{
-	char	reg;
-	int		ret;
-	char	type;
-
-	ret = 1;
-	reg = (char)((e->memory[MODA(proc->pc + 2)]));
-	if (!(reg > 0 && reg <= REG_NUMBER))
-		return (0);
-	s->value = proc->reg[reg - 1];
-	s->jump = 3;
-	s->where = 0;
-	s->acb = (e->memory[MODA(proc->pc + 1)]);
-	type = (s->acb >> 4) & 3;
-	if (!get_terms(e, proc, s, type))
-		ret = 0;
-	type = (s->acb >> 2) & 3;
-	if (!get_terms(e, proc, s, type))
-		ret = 0;
-	s->where = MODR(s->where);
+	ret = 0;
+	if (proc->acb == 0b01010100 && is_reg(proc->args[1] - 1, proc->args[2] - 1))
+		ret = proc->reg[proc->args[1] - 1] + proc->reg[proc->args[2] - 1];
+	else if (proc->acb == 0b01100100)
+		ret = proc->args[1] + proc->reg[proc->args[2] - 1];
+	else if (proc->acb == 0b01110100)
+		ret = proc->reg[proc->args[2] - 1]
+		+ fill_reg(e->memory[MODA(proc->pc + proc->args[1])]);
+	else if (proc->acb == 0b01011000)
+		ret = proc->reg[proc->args[1] - 1] + proc->args[2];
+	else if (proc->acb == 0b01101000)
+		ret = proc->args[1] + proc->args[2];
+	else if (proc->acb == 0b01111000)
+		ret = fill_reg(e->memory[MODA(proc->pc
+			+ proc->args[1])]) + proc->args[2];
 	return (ret);
 }
 
 void		sti(t_en *e, t_proc *proc)
 {
-	t_sti	s;
-	int		test;
+	unsigned int	adress;
+	int				i;
+	int				tab[4];
 
-	if (get_instruction(e, proc, &s))
-	{
+	i = -1;
+	get_args(e, proc);
+	adress = MODA(proc->pc + get_sum(e, proc));
+	while (i++ < 4)
+		tab[i] = MODA(adress + i);
+	if (adress == 0)
 		proc->carry = 0;
-		test = MODA(s.where + proc->pc);
-		e->memory[test] = s.value >> 24;
-		e->memory[MODA(test + 1)] = s.value >> 16;
-		e->memory[MODA(test + 2)] = s.value >> 8;
-		e->memory[MODA(test + 3)] = s.value;
-	}
 	else
 	{
-		s.jump = definejump(proc->acb);
-		proc->carry = 1;
+		e->memory[MODA(tab[3])] = proc->reg[proc->args[0] - 1];
+		e->memory[MODA(tab[2])] = proc->reg[proc->args[0] - 1] >> 8;
+		e->memory[MODA(tab[1])] = proc->reg[proc->args[0] - 1] >> 16;
+		e->memory[MODA(adress)] = proc->reg[proc->args[0] - 1] >> 24;
+		e->color[MODA(tab[3])] = proc->color;
+		e->color[MODA(tab[2])] = proc->color;
+		e->color[MODA(tab[1])] = proc->color;
+		e->color[MODA(adress)] = proc->color;
 	}
-	proc->pc += s.jump;
+	proc->pc = MODA(proc->pc + proc->to_inc);
 	proc->to_inc = 1;
 	proc->op = 0;
 }
