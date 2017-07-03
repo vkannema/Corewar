@@ -6,7 +6,7 @@
 /*   By: vtenigin <vtenigin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 21:47:53 by vtenigin          #+#    #+#             */
-/*   Updated: 2017/05/30 21:24:32 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/07/03 10:06:34 by vkannemacher     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,17 @@ void	winner(t_en *e)
 	}
 }
 
+void		showusage()
+{
+	ft_printf("Usage:\n\
+ 	Example: ./corewar -i -n -1 filename.cor\n\
+ 	GUI: ./corewar -i [Players]\n\
+ 	Default Player Numbers: 1, 2, 3, 4\n\
+ 	Change Player Number: -n -1 filename.cor\n\
+ 	Dump: ./corewar -dump 300 [Players](prints the memory after 300 cycles)\n");
+	exit(EXIT_FAILURE);
+}
+
 int		main(int ac, char **av)
 {
 	t_en	env;
@@ -33,7 +44,7 @@ int		main(int ac, char **av)
 
 	envinit(&env);
 	if (ac < 2)
-		showerr("usage: ./corewar champ1.cor...");
+		showusage();
 	i = 0;
 	if (get_bonus(av[i + 1], &env))
 		i++;
