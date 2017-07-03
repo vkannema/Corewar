@@ -6,25 +6,11 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/11 19:42:05 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/30 11:47:32 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/06/05 14:12:05 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
-
-void	remove_dead(t_en *e, t_proc *proc)
-{
-	t_proc	*tmp;
-
-	tmp = e->proc;
-	while (tmp->next != proc)
-		tmp = tmp->next;
-	if (proc != e->proc && proc != e->end)
-	{
-		tmp->next = proc->next;
-		free(proc);
-	}
-}
 
 void	reset_lives(t_en *e)
 {
@@ -38,10 +24,7 @@ void	reset_lives(t_en *e)
 	while (tmp != e->proc)
 	{
 		if (!tmp->live)
-		{
 			tmp->alive = 0;
-			remove_dead(e, tmp);
-		}
 		tmp->live = 0;
 		tmp = tmp->next;
 	}

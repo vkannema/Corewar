@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/12 11:35:05 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/24 17:34:49 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/30 21:25:56 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,34 +59,38 @@ static int	get_sum(t_en *e, t_proc *proc)
 	int ret;
 
 	ret = 0;
-	if (proc->acb == 0b01100100)
+	if (proc->acb == RDR && is_reg(proc->args[0] - 1, 0, 0))
 		ret = proc->reg[proc->args[0] - 1] + proc->args[1];
-	else if (proc->acb == 0b10100100)
+	else if (proc->acb == DDR)
 		ret = fill_reg(proc->args[0] + proc->args[1]);
-	else if (proc->acb == 0b11100100)
+	else if (proc->acb == IDR)
 		ret = fill_reg(e->memory[MODA(proc->pc + proc->args[0])] +
 		proc->args[1]);
-	else if (proc->acb == 0b01010100)
-		ret = (int)(proc->reg[proc->args[1] - 1] +
-			proc->reg[proc->args[0] - 1]);
-	else if (proc->acb == 0b10010100)
-		ret = proc->args[0] + proc->reg[proc->args[1]];
-	else if (proc->acb == 0b11010100)
+	else if (proc->acb == RRR &&
+		is_reg(proc->args[1] - 1, proc->args[0] - 1, 0))
+		ret = proc->reg[proc->args[1] - 1] + proc->reg[proc->args[0] - 1];
+	else if (proc->acb == DRR && is_reg(0, 0, proc->args[1] - 1))
+		ret = proc->args[0] + proc->reg[proc->args[1] - 1];
+	else if (proc->acb == IRR && is_reg(0, proc->args[0] - 1,
+		proc->args[1] - 1))
 		ret = proc->reg[proc->args[0] - 1] + proc->reg[proc->args[1] - 1];
 	return (ret);
 }
 
-static int	get_ldi(int pc, int res)
+static int	get_ldi(int pc, int arg)
 {
-	int	ret;
+	unsigned int	res;
 
-	ret = 0;
-	if (res > 32767)
+	if (arg > 32767)
 	{
-		ret = -(MODR(res));
-		return (pc + ret);
+		arg = 0xffff - arg + 1;
+		arg = MODR(arg);
+		arg = pc - arg;
+		res = MODA(arg);
+		return (MODA(res));
 	}
-	return (pc + MODR(res));
+	arg = MODR(arg);
+	return (pc + arg);
 }
 
 void		ft_ldi(t_en *e, t_proc *proc)
@@ -96,15 +100,20 @@ void		ft_ldi(t_en *e, t_proc *proc)
 	get_args(e, proc);
 	adress = get_sum(e, proc);
 	adress = get_ldi(proc->pc, adress);
-	if (adress == 0)
-		proc->carry = 1;
-	else
+	if (is_reg(proc->args[2] - 1, 0, 0))
 	{
-		proc->reg[proc->args[2] - 1] = get_hex_sum1(e->memory[adress],
+		if (adress == 0)
+			proc->carry = 1;
+		else
+		{
+			proc->reg[proc->args[2] - 1] = get_hex_sum1(e->memory[adress],
 			e->memory[MODA(adress + 1)], e->memory[MODA(adress + 2)],
 			e->memory[MODA(adress + 3)]);
-		proc->carry = 0;
+			proc->carry = 0;
+		}
 	}
+	else
+		proc->carry = 1;
 	proc->pc = MODA(proc->pc + proc->to_inc);
 	proc->to_inc = 1;
 	proc->op = 0;

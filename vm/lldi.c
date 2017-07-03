@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/12 22:16:52 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/16 14:36:57 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/30 15:35:15 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,18 +59,20 @@ static int			get_sum(t_en *e, t_proc *proc)
 	int ret;
 
 	ret = 0;
-	if (proc->acb == 0b01100100)
+	if (proc->acb == 0b01100100 && is_reg(proc->args[0] - 1, 0, 0))
 		ret = proc->reg[proc->args[0] - 1] + proc->args[1];
 	else if (proc->acb == 0b10100100)
 		ret = fill_reg(proc->args[0] + proc->args[1]);
 	else if (proc->acb == 0b11100100)
 		ret = fill_reg(e->memory[MODA(proc->pc +
 			proc->args[0])] + proc->args[1]);
-	else if (proc->acb == 0b01010100)
+	else if (proc->acb == 0b01010100 && is_reg(proc->args[1] - 1,
+		proc->reg[proc->args[0] - 1], 0))
 		ret = proc->reg[proc->args[1] - 1] + proc->reg[proc->args[0] - 1];
-	else if (proc->acb == 0b10010100)
-		ret = proc->args[0] + proc->reg[proc->args[1]];
-	else if (proc->acb == 0b11010100)
+	else if (proc->acb == 0b10010100 && is_reg(proc->args[1] - 1, 0, 0))
+		ret = proc->args[0] + proc->reg[proc->args[1] - 1];
+	else if (proc->acb == 0b11010100 &&
+		is_reg(proc->args[0] - 1, proc->args[1] - 1, 0))
 		ret = proc->reg[proc->args[0] - 1] + proc->reg[proc->args[1] - 1];
 	return (ret);
 }
@@ -81,14 +83,18 @@ void				ft_lldi(t_en *e, t_proc *proc)
 
 	get_args(e, proc);
 	adress = get_sum(e, proc);
-	if (adress == 0)
-		proc->carry = 1;
-	else
+	if (is_reg(proc->args[2] - 1, 0, 0))
 	{
-		proc->reg[proc->args[2] - 1] = adress;
-		proc->carry = 0;
+		if (adress != 0)
+		{
+			proc->reg[proc->args[2] - 1] = adress;
+			proc->carry = 0;
+		}
+		if (adress == 0)
+			proc->carry = 1;
 	}
-	proc->pc += proc->to_inc;
+	else
+		proc->carry = 1;
 	proc->pc = MODA(proc->pc + proc->to_inc);
 	proc->to_inc = 1;
 	proc->op = 0;

@@ -6,7 +6,7 @@
 /*   By: vtenigin <vtenigin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 22:55:15 by vtenigin          #+#    #+#             */
-/*   Updated: 2017/05/29 16:36:34 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/30 16:32:57 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,15 @@
 # define PROG_NAME_LENGTH		(128)
 # define COMMENT_LENGTH			(2048)
 # define COREWAR_EXEC_MAGIC		0xea83f3
+# define RRR					0b01010100
+# define IRR					0b11010100
+# define DRR					0b10010100
+# define RIR					0b01110100
+# define IIR					0b11110100
+# define DIR					0b10110100
+# define RDR					0b01100100
+# define IDR					0b11100100
+# define DDR					0b10100100
 
 typedef char					t_arg_type;
 
@@ -190,4 +199,5 @@ void							makeproc(t_en *env);
 void							writechamp(t_en *env);
 void							checkmagic(t_en *env);
 void							*revbytes(void *mem, size_t size);
+int								is_reg(int a1, int a2, int a3);
 #endif

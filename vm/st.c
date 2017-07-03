@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 16:20:27 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/29 22:15:45 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/30 15:40:18 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,18 @@ void		st(t_en *e, t_proc *proc)
 	get_args(e, proc);
 	e->color[proc->pc] = proc->color;
 	adress = get_address(proc->pc, proc->args[1]);
+	proc->carry = 0;
 	while (i++ < 4)
 		tab[i] = MODA(adress + i);
-	if (proc->args[0] == 0)
-		proc->carry = 0;
-	else if (proc->acb == 0b01010000)
+	if (adress == 0)
+		proc->carry = 1;
+	else if (proc->acb == 0b01010000 &&
+		is_reg(proc->args[1] - 1, proc->args[0] - 1, 0))
 		proc->reg[proc->args[1]] = proc->reg[proc->args[0]];
 	else if (proc->acb == 0b01110000)
 		fill_memory(e, adress, tab, proc);
+	else
+		proc->carry = 1;
 	proc->pc = MODA(proc->pc + proc->to_inc);
 	proc->to_inc = 1;
 	proc->op = 0;

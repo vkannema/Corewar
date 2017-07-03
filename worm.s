@@ -4,4 +4,3 @@
 live:
 	live %1
 	fork %-10
-	zjmp %:live

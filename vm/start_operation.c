@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/06 14:31:01 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/29 23:41:36 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/30 16:07:37 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ void		operation(t_en *e, t_proc *proc)
 {
 	void	(*operation_type[17])(t_en *e, t_proc *proc);
 
-	if (e->tot_cycle == 17447)
-		ft_printf("proc->op %x\n", proc->op );
 	ft_init_op(operation_type);
 	operation_type[proc->op](e, proc);
 }

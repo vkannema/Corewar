@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/17 15:23:28 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/17 15:23:47 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/30 18:00:54 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_print_dump_init(t_en *e)
 	while (champ)
 	{
 		ft_printf("* Player %i, weighing %i bytes, \"%s\" (\"%s\") !\n", \
-		champ->id, champ->size, champ->name, \
+		-champ->id, champ->size, champ->name, \
 		champ->comment);
 		champ = champ->next;
 	}

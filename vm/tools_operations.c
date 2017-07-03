@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 21:30:01 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/29 16:22:55 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/30 12:04:29 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,14 @@ int			definejump(int acb)
 		return (6);
 	else if (acb == 0b01101000 || acb == 0b01111000)
 		return (7);
+	return (1);
+}
+
+int			is_reg(int a1, int a2, int a3)
+{
+	if (a1 < 0 || a1 >= REG_NUMBER ||
+			a2 < 0 || a2 >= REG_NUMBER ||
+				a3 < 0 || a3 >= REG_NUMBER)
+		return (0);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 20:21:38 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/16 14:38:12 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/30 17:53:02 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	get_args_axo4(t_en *e, t_proc *proc)
 		e->memory[MODA(proc->pc + 3)], e->memory[MODA(proc->pc + 4)],
 		e->memory[MODA(proc->pc + 5)]));
 		proc->args[2] = MODA(e->memory[proc->pc + 7]);
+		proc->to_inc = 8;
 	}
 }
 

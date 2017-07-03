@@ -6,7 +6,7 @@
 /*   By: vtenigin <vtenigin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 21:47:53 by vtenigin          #+#    #+#             */
-/*   Updated: 2017/05/29 20:41:52 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/30 21:24:32 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	winner(t_en *e)
 	while (champ)
 	{
 		if (champ->id == e->last_rapported)
-			ft_printf("Contestant %d : %s as won !\n", champ->id, champ->name);
+			ft_printf("Contestant %d, \"%s\", has won !\n",
+			-(champ->id), champ->name);
 		champ = champ->next;
 	}
 }

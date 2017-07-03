@@ -6,7 +6,7 @@
 /*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/12 21:18:52 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/16 15:01:20 by vkannema         ###   ########.fr       */
+/*   Updated: 2017/05/30 12:05:44 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,23 @@ void		sub(t_en *e, t_proc *proc)
 	int	res;
 
 	get_args(e, proc);
-	res = proc->reg[proc->args[0] - 1] - proc->reg[proc->args[1] - 1];
-	if (res == 0)
+	if (is_reg(proc->args[0] - 1, proc->args[1] - 1, proc->args[2] - 1))
 	{
-		proc->carry = 1;
-		proc->to_inc = 5;
+		res = proc->reg[proc->args[0] - 1] - proc->reg[proc->args[1] - 1];
+		if (res == 0)
+		{
+			proc->reg[proc->args[2] - 1] = res;
+			proc->carry = 1;
+			proc->to_inc = 5;
+		}
+		else
+		{
+			proc->carry = 0;
+			proc->reg[proc->args[2] - 1] = res;
+		}
 	}
 	else
-	{
 		proc->carry = 0;
-		proc->reg[proc->args[2] - 1] = res;
-	}
 	proc->pc = MODA(proc->pc + proc->to_inc);
 	proc->to_inc = 1;
 	proc->op = 0;

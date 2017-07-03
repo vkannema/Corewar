@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display_game.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vtenigin <vtenigin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vkannema <vkannema@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/14 16:05:57 by vkannema          #+#    #+#             */
-/*   Updated: 2017/05/29 22:59:24 by vtenigin         ###   ########.fr       */
+/*   Updated: 2017/05/30 18:13:30 by vkannema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void	print_operations(t_en *e)
 		{
 			printw("%d cycles to launch %x operation.", proc->to_wait,
 			proc->op);
-			printw("pc %d\n", proc->pc);
 		}
 		proc = proc->next;
 	}
@@ -49,8 +48,8 @@ void	print_operations(t_en *e)
 	{
 		if (proc->alive)
 		{
-			printw("%d cycles to launch %x operation. pc %d\n", proc->to_wait,
-			proc->op, proc->pc);
+			printw("%d cycles to launch %x operation.\n", proc->to_wait,
+			proc->op);
 		}
 		proc = proc->next;
 	}
